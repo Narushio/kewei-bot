@@ -1,0 +1,15 @@
+bot:
+  superAdmins:
+    - 1152207037
+
+mah:
+  account: 2149118048
+  verifyKey: INITKEYeBcHxjzM
+  host: 127.0.0.1
+  port:
+    http: 8080
+    ws: 8080
+
+wiki:
+  jp: https://azurlane.koumakan.jp
+  cn: https://wiki.biligame.com/blhx

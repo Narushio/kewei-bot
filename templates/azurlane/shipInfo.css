@@ -1,0 +1,300 @@
+* {
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#template {
+  margin: 0 auto;
+  width: 1280px;
+  height: 800px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#main {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+#left {
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+  height: 100%;
+  align-items: center;
+}
+
+#right {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  height: 100%;
+  align-items: center;
+}
+
+.head {
+  width: 80%;
+  height: 60px;
+  margin-left: 10px;
+  background: linear-gradient(to right, rgba(40, 39, 43, 1), rgba(40, 39, 43, 0));
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.head .title {
+  color: #D4E9FD;
+  font-size: 40px;
+  text-shadow: 0px 0px 20px #5E9BFE;
+}
+
+.head .title::after{
+  content: "SHIP INFO";
+  font-size: 15px;
+}
+
+.name-card {
+  margin-top: 3%;
+  width: 65%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.name-card .main {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 0 10px rgba(40, 39, 43);
+  color: white;
+  text-align: center;
+}
+
+.name-card .stars {
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  display: flex;
+  top: -10px;
+  right: 80px;
+  font-size: 25px;
+  flex-direction: row-reverse;
+  align-items: center;
+  color: #F9EA95;
+  text-shadow: 2px 0 0 #53524D, -2px 0 0 #53524D, 0 2px 0 #53524D, 0 -2px 0 #53524D, 1px 1px #53524D, -1px -1px 0 #53524D, 1px -1px 0 #53524D, -1px 1px 0 #53524D;
+}
+
+.name-card .main .name {
+  height: 35px;
+  width: 100%;
+  font-size: 26px;
+  background-color: rgba(40, 39, 43, 0.8);
+}
+
+.name-card .main .code {
+  height: 15px;
+  width: 100%;
+  font-size: 14px;
+  background-color: rgba(40, 39, 43, 0.2);
+}
+
+.ship-card {
+  margin-top: 3%;
+  display: flex;
+  width: 90%;
+  flex-direction: row;
+  box-shadow: 0 0 10px rgba(40, 39, 43);
+  background: rgba(40, 39, 43, 0.2);
+}
+
+.ship-card .attribute-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: white;
+}
+
+.ship-card .attribute-card .hull-type {
+  float: right;
+  font-size: 30px;
+  color: #FBBB12;
+  text-shadow: 2px 0 0 #53524D, -2px 0 0 #53524D, 0 2px 0 #53524D, 0 -2px 0 #53524D, 1px 1px #53524D, -1px -1px 0 #53524D, 1px -1px 0 #53524D, -1px 1px 0 #53524D;
+}
+
+.ship-card .attribute-card .item {
+  display: flex;
+  height: 26px;
+  width: 49%;
+  flex-direction: row;
+  background: rgba(40, 39, 43, 0.6);
+  margin: 2px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ship-card .attribute-card .item img {
+  height: 26px;
+  width: 26px;
+  background: rgba(40, 39, 43, 0.8);
+}
+
+.ship-card .attribute-card .item .left{
+  display: flex;
+  flex-direction: row;
+  justify-items: flex-start;
+  align-items: center;
+}
+
+.ship-card .attribute-card .item .right{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 5px;
+}
+
+.skill-card {
+  box-shadow: 0 0 10px rgba(40, 39, 43);
+  width: 540px;
+  margin: 3% 40px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ship-card .attribute-card .title,
+.dev-level-card .title,
+.limit-break-card .title,
+.limit-break-card .title,
+.skill-card .title {
+  padding-left: 10px;
+  color: white;
+  width: 100%;
+  font-size: 30px;
+  background: linear-gradient(to right, rgba(73,98, 157, 1), rgba(73,98, 157, 0));
+}
+
+.limit-break-card .title::after {
+  content: "LIMIT BREAK";
+  font-size: 10px;
+}
+
+.ship-card .attribute-card .title::after {
+  content: "ATTRIBUTE";
+  font-size: 10px;
+}
+
+.dev-level-card .title::after {
+  content: "DEV INCENTIVES";
+  font-size: 10px;
+}
+
+.skill-card .title::after {
+  content: "SKILL";
+  font-size: 10px;
+}
+
+.skill-card .item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  align-content: space-between;
+  border: 1px solid rgba(40, 39, 43, 0.2);
+}
+
+.skill-card .item img {
+  width: 80px;
+}
+
+.skill-card .item .name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  color: black;
+  width: 20%;
+  padding: 5px;
+  font-size: 14px;
+  justify-content: center;
+}
+
+.skill-card .item .description {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  justify-content: center;
+  text-align: justify;
+  color: white;
+  width: 80%;
+  height: 100%;
+  font-size: 14px;
+  background: rgba(40, 39, 43, 0.8);
+}
+
+.chibi {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.limit-break-card,
+.dev-level-card {
+  margin-top: 3%;
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(40, 39, 43);
+  color: white;
+}
+
+.limit-break-card .item,
+.dev-level-card .item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: rgba(40, 39, 43, 0.6);
+  font-size: 14px;
+  border: 1px solid rgba(40, 39, 43, 0.2);
+}
+
+.limit-break-card .item .level,
+.dev-level-card .item .level {
+  display: flex;
+  flex-direction: row;
+  width: 8%;
+  height: 100%;
+  align-items: center;
+  font-size: 14px;
+  justify-content: center;
+  background: rgba(40, 39, 43, 0.8);
+  padding: 5px;
+}
+
+.limit-break-card .item .buff,
+.dev-level-card .item .buff {
+  display: flex;
+  flex-direction: row;
+  width: 92%;
+  height: 100%;
+  align-items: center;
+  font-size: 14px;
+  justify-content: center;
+  padding: 5px;
+  text-align: center;
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="styleSheet" href="../assets/font.css" />
+    <link type="text/css" rel="styleSheet" href="shipInfo.css" />
+    <title>Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="../assets/babel.min.js"></script>
+  <script src="../assets/react.production.min.js"></script>
+  <script src="../assets/react-dom.production.min.js"></script>
+  <script type="text/babel">
+    "use strict";
+
+    const stars = {
+      3: "★★★",
+      4: "★★★★",
+      5: "★★★★★",
+      6: "★★★★★★",
+    };
+
+    const limitBreaksLevel = {
+      0: "一阶",
+      1: "二阶",
+      2: "三阶",
+    };
+
+    const Root = ({ data }) => {
+      const { baseStats } = data;
+      const { devLevels } = data;
+      const { limitBreaks } = data;
+      const { maxStats } = data;
+
+      return (
+        <div
+          id="template"
+          style={{ backgroundImage: `url('../../${data.rarityBG}')` }}
+        >
+          <div className="head">
+            <div className="title">角色详情</div>
+          </div>
+          <div id="main">
+            <div id="left">
+              <div className="name-card">
+                <img src={`../../${data.nationIcon}`} width="80" height="80" />
+                <div className="stars">{stars[data.stars]}</div>
+                <div className="main">
+                  <div className="name">{data.name}</div>
+                  <div className="code">{data.code}</div>
+                </div>
+                <img
+                  src={`../../${data.hullTypeIcon}`}
+                  width="auto"
+                  height="50"
+                />
+              </div>
+              <div className="ship-card">
+                <img src={`../../${data.thumbnail}`} width="192" height="256" />
+                <div className="attribute-card">
+                  <div className="title">
+                    属性<span className="hull-type">{data.hullType}</span>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Duration.png" />
+                      <span>耐久</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.health} → ${maxStats.health}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Armor.png" />
+                      <span>装甲</span>
+                    </div>
+                    <div className="right">
+                      <span>{baseStats.armor}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Refill.png" />
+                      <span>装填</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.reload} → ${maxStats.reload}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Firepower.png" />
+                      <span>炮击</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.firepower} → ${maxStats.firepower}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Torpedo.png" />
+                      <span>雷击</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.torpedo} → ${maxStats.torpedo}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Evasion.png" />
+                      <span>机动</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.evasion} → ${maxStats.evasion}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/AntiAir.png" />
+                      <span>防空</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.antiair} → ${maxStats.antiair}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Aviation.png" />
+                      <span>航空</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.aviation} → ${maxStats.aviation}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Hit.png" />
+                      <span>命中</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.accuracy} → ${maxStats.accuracy}`}</span>
+                    </div>
+                  </div>
+                  <div
+                    className="item"
+                    style={{ opacity: baseStats.oxygen ? 1 : 0 }}
+                  >
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Oxygen.png" />
+                      <span>氧气</span>
+                    </div>
+                    <div className="right">
+                      <span>
+                        {baseStats.oxygen && baseStats.oxygen} →{" "}
+                        {maxStats.oxygen && maxStats.oxygen}
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    className="item"
+                    style={{ opacity: baseStats.ammunition ? 1 : 0 }}
+                  >
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Ammunition.png" />
+                      <span>弹药量</span>
+                    </div>
+                    <div className="right">
+                      <span>
+                        {baseStats.ammunition && baseStats.ammunition} →{" "}
+                        {maxStats.ammunition && maxStats.ammunition}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Luck.png" />
+                      <span>幸运</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.luck} → ${maxStats.luck}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/Consumption.png" />
+                      <span>消耗</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.oilConsumption} → ${maxStats.oilConsumption}`}</span>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="left">
+                      <img src="../../resource/images/attribute/ASW.png" />
+                      <span>反潜</span>
+                    </div>
+                    <div className="right">
+                      <span>{`${baseStats.antisubmarineWarfare} → ${maxStats.antisubmarineWarfare}`}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {devLevels && (
+                <div className="dev-level-card">
+                  <div className="title">开发加成</div>
+                  {devLevels.map((devLevel, index) => {
+                    if (index == devLevels.length - 1) {
+                      return <div className="item">{devLevel.total}</div>;
+                    } else {
+                      return (
+                        <div className="item">
+                          <div className="level">{devLevel.level}</div>
+                          <div className="buff">{devLevel.buff}</div>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              )}
+              {limitBreaks && (
+                <div className="limit-break-card">
+                  <div className="title">突破效果</div>
+                  {limitBreaks.map((limitBreak, index) => (
+                    <div className="item">
+                      <div className="level">{limitBreaksLevel[index]}</div>
+                      <div className="buff">{limitBreak}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div id="right">
+              <div className="skill-card">
+                <div className="title">技能</div>
+                {data.skills.map((skill) => (
+                  <div className="item">
+                    <div
+                      className="name"
+                      style={{ backgroundColor: skill.color }}
+                    >
+                      <img src={`../../${skill.icon}`} width="36" health="36" />
+                      {skill.name}
+                    </div>
+                    <div
+                      className="description"
+                      dangerouslySetInnerHTML={{ __html: skill.description }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const initDom = (data) => {
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<Root data={data} />);
+    };
+  </script>
+</html>

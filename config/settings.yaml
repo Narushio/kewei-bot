@@ -1,7 +1,0 @@
-mah:
-  account: 305001544
-  verifyKey: INITKEYeBcHxjzM
-  host: 127.0.0.1
-  port:
-    http: 8080
-    ws: 8080
