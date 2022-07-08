@@ -14,10 +14,10 @@ class Bot
   def build_browser_driver
     options = Selenium::WebDriver::Chrome::Options.new
     options.headless!
-    headless_driver ||= Selenium::WebDriver.for :chrome, options: options
-    driver ||= Selenium::WebDriver.for :chrome
+    headless_driver = Selenium::WebDriver.for :chrome, options: options
+    # driver ||= Selenium::WebDriver.for :chrome
     Logger.new($stdout).info("Browser device loaded successfully :).")
-    self.class.define_singleton_method(:driver) { driver }
+    # self.class.define_singleton_method(:driver) { driver }
     self.class.define_singleton_method(:headless_driver) { headless_driver }
   end
 end

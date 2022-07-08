@@ -39,7 +39,7 @@
       return (
         <div
           id="template"
-          style={{ backgroundImage: `url('../../${data.rarityBG}')` }}
+          style={{ backgroundImage: `url("../../${data.rarityBG}")` }}
         >
           <div className="head">
             <div className="title">角色详情</div>
@@ -47,7 +47,14 @@
           <div id="main">
             <div id="left">
               <div className="name-card">
-                <img src={`../../${data.nationIcon}`} width="80" height="80" />
+                <div
+                  className="left"
+                  style={{
+                    backgroundImage: `url("../../${data.nationIcon}")`,
+                  }}
+                >
+                  <span style={{ width: "100%" }}>{data.hullType}</span>
+                </div>
                 <div className="stars">{stars[data.stars]}</div>
                 <div className="main">
                   <div className="name">{data.name}</div>
@@ -56,15 +63,13 @@
                 <img
                   src={`../../${data.hullTypeIcon}`}
                   width="auto"
-                  height="50"
+                  height="45"
                 />
               </div>
               <div className="ship-card">
                 <img src={`../../${data.thumbnail}`} width="192" height="256" />
                 <div className="attribute-card">
-                  <div className="title">
-                    属性<span className="hull-type">{data.hullType}</span>
-                  </div>
+                  <div className="title">属性</div>
                   <div className="item">
                     <div className="left">
                       <img src="../../resource/images/attribute/Duration.png" />
@@ -210,7 +215,11 @@
                   <div className="title">开发加成</div>
                   {devLevels.map((devLevel, index) => {
                     if (index == devLevels.length - 1) {
-                      return <div className="item">{devLevel.total}</div>;
+                      return (
+                        <div className="item" style={{ padding: "5px" }}>
+                          {devLevel.total}
+                        </div>
+                      );
                     } else {
                       return (
                         <div className="item">

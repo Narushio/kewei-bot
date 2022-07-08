@@ -16,23 +16,17 @@ module Mah
     private
 
     def handle_message(message)
-      return nil unless check_prefix_command(message)
-
       case message.type
       when "GroupMessage"
         functions = @group_features.flatten.sort {_1[:level]}
         functions.each do |function|
-          function[:lambda].call(message, message.text[2..])
+          function[:lambda].call(message, message.text.strip)
         end
       end
     end
 
     def handle_event(message)
       nil
-    end
-
-    def check_prefix_command(message)
-      message.text.match?(/\A可畏/)
     end
   end
 end

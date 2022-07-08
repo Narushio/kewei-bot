@@ -11,6 +11,7 @@ module Features
 
     def build
       query_ship_girl
+      query_recommend_equipment
     end
 
     private
@@ -18,19 +19,35 @@ module Features
     def query_ship_girl
       functions << {
         level: 2,
-        function_name: "查询舰娘",
+        function_name: "查舰娘",
         lambda: lambda do |message, text|
           @message = message
-          return unless text.match?(/\A查询舰娘 (.*)/)
+          return unless text.match?(/\A查舰娘 (.*)/)
 
-          data = ship_info(text.split(" ")[1])
-          return if data.nil?
+          name = text.split(" ")[1]
+          absolute_path = ship_info(name: name)
+          return if absolute_path.nil?
 
-          Bot.driver.get("file://#{Rails.root.join("templates", "azurlane", "shipInfo.html")}")
-          Bot.driver.manage.window.resize_to(1400, 1400)
-          Bot.driver.execute_script("initDom(#{data.to_json})")
+          send_group_message(@message, [plain("\n"), image(path: absolute_path)], :at)
+        end
+      }
 
-          send_group_message(@message, [image(base64: "")], :at)
+      functions
+    end
+
+    def query_recommend_equipment
+      functions << {
+        level: 2,
+        function_name: "查推荐装备",
+        lambda: lambda do |message, text|
+          @message = message
+          return unless text.match?(/\A查推荐装备 (.*)/)
+
+          name = text.split(" ")[1]
+          absolute_path = recommend_equipment(name: name)
+          return if absolute_path.nil?
+
+          send_group_message(@message, [plain("\n"), image(path: absolute_path)], :at)
         end
       }
 
@@ -40,7 +57,7 @@ module Features
     def query_weapon
       functions = []
       functions << {
-        regex: /\A查询武器 (.+)/,
+        regex: /\A查武器 (.+)/,
         function_name: "query_weapon",
         level: "2",
         proc: proc do |message, name|

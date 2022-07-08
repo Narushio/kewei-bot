@@ -19,7 +19,7 @@ module Features
         function_name: "表情包",
         lambda: lambda do |message, text|
           @message = message
-          return unless text == ""
+          return unless text.match?(/\A梗图来/)
 
           emojis = Dir[Rails.root.join("resource/images/emoji/*").to_s]
           send_group_message(@message, [image(path: emojis.sample)])

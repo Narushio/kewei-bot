@@ -25,7 +25,7 @@ module Features
           return if text.match(/\A(色图|涩图|🐍图)(.*)/).nil?
 
           is_r18 = false
-          params = {proxy: "i.pixiv.re", size: "regular"}
+          params = {proxy: "i.pixiv.re", size: "original"}
           begin
             unless Regexp.last_match(2).nil? || Regexp.last_match(2) == ""
               options = Regexp.last_match(2).split(" ")
@@ -52,7 +52,7 @@ module Features
     end
 
     def setu_chain(data, is_r18)
-      image_base64 = download_pic(data["pid"], data.dig("urls", "regular"), base64: true)
+      image_base64 = download_pic(data["pid"], data.dig("urls", "original"), base64: true)
       return send_group_message(@message, [plain("指挥官，下载图片出错惹...")], :at) if image_base64 == false
 
       chain = [

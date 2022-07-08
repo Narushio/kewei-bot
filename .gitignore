@@ -8,7 +8,6 @@
 /.bundle
 /.idea
 /resource
-/bin
 
 # Ignore all logfiles and tempfiles.
 /log/*

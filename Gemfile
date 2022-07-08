@@ -13,6 +13,8 @@ gem "stimulus-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "webdrivers", "~> 5.0"
 gem "config"
+gem "rmagick"
+gem "bootsnap", require: false
 gem "faraday"
 gem "faye-websocket"
 gem "nokogiri"
