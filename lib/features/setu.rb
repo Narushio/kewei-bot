@@ -34,17 +34,17 @@ module Features
                 image_base64 = Base64.strict_encode64(File.read("resource/images/emoji/不可以涩涩.gif"))
                 return send_group_message(@message, [plain("\n"), image(base64: image_base64)], :at)
               end
-              params[:tag] = options.join("|") if options.join("|") != ""
+              params[:tag] = options unless options.empty?
             end
 
             send_group_message(@message, [plain("嗯————?，指挥官竟然看我的色图，真是可爱呢~~~")], :at) if params[:tag].to_s.match?(/(可畏)/)
             data = JSON.parse(@conn.post(nil, params.to_json).body).dig("data", 0)
           rescue => e
             send_to_super_admins([plain(e.message)])
-            return send_group_message(@message, [plain("指挥官，网络请求失败惹...")], :at)
+            return send_group_message(@message, [plain("指挥官，网络请求失败惹#{I18n.t "emoji.cry"}")], :at)
           end
 
-          return send_group_message(@message, [plain("指挥官，指挥官的性癖太独特找不到图片...")], :at) if data.nil?
+          return send_group_message(@message, [plain("指挥官，指挥官的性癖太独特找不到图片#{I18n.t "emoji.sweat"}")], :at) if data.nil?
 
           send_group_message(@message, setu_chain(data, is_r18), :at)
         end
@@ -53,7 +53,7 @@ module Features
 
     def setu_chain(data, is_r18)
       image_base64 = download_pic(data["pid"], data.dig("urls", "original"), base64: true)
-      return send_group_message(@message, [plain("指挥官，下载图片出错惹...")], :at) if image_base64 == false
+      return send_group_message(@message, [plain("指挥官，下载图片出错惹#{I18n.t "emoji.cry"}")], :at) if image_base64 == false
 
       chain = [
         plain(

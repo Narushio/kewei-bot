@@ -60,14 +60,14 @@ module Features
           @message = message
           return unless text.match?(/\A(pixiv排行|pixiv排行榜|p站排行|p站排行榜)/)
 
-          return send_group_message(@message, [plain("指挥官，P站排行榜或搜图正在搜索，请不要重复触发命令...")], :at) if @queue.include?(@message.qq)
+          return send_group_message(@message, [plain("指挥官，P站排行榜或搜图正在搜索，请不要重复触发命令#{I18n.t "emoji.angry"}")], :at) if @queue.include?(@message.qq)
 
           mode_index = text.split(" ")[-1]
           params = {mode: "day", page: 1}
 
           unless mode_index == text
             mode = RANKING_TYPE.fetch(mode_index.to_i) do
-              return send_group_message(@message, [plain("指挥官，没有这个排行榜类型喔...\n#{RANKING_INFO}")], :at) { @queue.delete(@message.qq) }
+              return send_group_message(@message, [plain("指挥官，没有这个排行榜类型喔#{I18n.t "emoji.lying_down"}\n#{RANKING_INFO}")], :at) { @queue.delete(@message.qq) }
             end
             if mode.match?(/(r18)/) && !Settings.pixiv.r18
               image_base64 = Base64.strict_encode64(File.read("resource/images/emoji/不可以涩涩.gif"))
@@ -76,11 +76,11 @@ module Features
               params[:mode] = mode
             end
           end
-          send_group_message(@message, [plain("指挥官，开始搜索整理p站排行榜图片...")], :at) { @queue.push(@message.qq) }
+          send_group_message(@message, [plain("指挥官，开始搜索整理p站排行榜图片#{I18n.t "emoji.happy"}")], :at) { @queue.push(@message.qq) }
 
           illusts = get_illusts(params)
           if illusts.empty?
-            send_group_message(@message, [plain("指挥官，该排行榜类型今日数据好像还没有更新呢...为你找到昨天的数据...")], :at)
+            send_group_message(@message, [plain("指挥官，该排行榜类型今日数据好像还没有更新呢#{I18n.t "emoji.busy"}，为你找到昨天的数据")], :at)
             illusts = get_illusts(params, date: Date.yesterday.strftime("%Y-%m-%d"))
           end
 
@@ -99,7 +99,7 @@ module Features
             .gsub("_webp", "")
           image_base64 = download_pic(illust["id"], url, base64: true)
           chain = if image_base64 == false
-            [plain("该图片下载失败...")]
+            [plain("该图片下载失败#{I18n.t "emoji.cry"}")]
           else
             [plain("PID: #{illust["id"]}\nTitle: #{illust["title"]}\n"), image(base64: image_base64)]
           end
@@ -116,7 +116,7 @@ module Features
         illusts = JSON.parse(@conn.get("rank", params).body)["illusts"][0..Settings.pixiv.limit.to_i - 1]
       rescue => e
         send_to_super_admins([plain(e.message)])
-        return send_group_message(@message, [plain("指挥官，网络出错惹...")], :at) { @queue.delete(@message.qq) }
+        return send_group_message(@message, [plain("指挥官，网络出错惹#{I18n.t "emoji.cry"}")], :at) { @queue.delete(@message.qq) }
       end
       illusts
     end

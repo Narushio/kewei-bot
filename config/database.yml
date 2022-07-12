@@ -12,6 +12,8 @@
 default: &default
   adapter: mysql2
   encoding: utf8mb4
+  ssl_mode: :disabled
+  sslverify: false
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 16) %>
   host: <%= ENV.fetch("DATABASE_HOSTNAME") { "127.0.0.1" } %>
   username: root
