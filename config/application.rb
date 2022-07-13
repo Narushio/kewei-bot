@@ -21,10 +21,11 @@ module KeweiBot
     #
     # config.time_zone = "Central Time (US & Canada)"
     config.autoload_paths << "#{root}/lib"
+    config.i18n.default_locale = :"zh-CN"
+
+    Thread.new {
+      sleep 1
+      Bot.new
+    }.run
   end
 end
-
-Thread.new {
-  sleep 1
-  Bot.new
-}.run

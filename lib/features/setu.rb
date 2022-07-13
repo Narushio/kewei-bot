@@ -19,7 +19,7 @@ module Features
     def send_setu
       functions << {
         level: 2,
-        function_name: "色图",
+        function_type: "色图",
         lambda: lambda do |message, text|
           @message = message
           return if text.match(/\A(色图|涩图|🐍图)(.*)/).nil?
@@ -41,10 +41,10 @@ module Features
             data = JSON.parse(@conn.post(nil, params.to_json).body).dig("data", 0)
           rescue => e
             send_to_super_admins([plain(e.message)])
-            return send_group_message(@message, [plain("指挥官，网络请求失败惹#{I18n.t "emoji.cry"}")], :at)
+            return send_group_message(@message, [plain("指挥官，网络请求失败惹#{I18n.t "azurlane.emoji.cry"}")], :at)
           end
 
-          return send_group_message(@message, [plain("指挥官，指挥官的性癖太独特找不到图片#{I18n.t "emoji.sweat"}")], :at) if data.nil?
+          return send_group_message(@message, [plain("指挥官，指挥官的性癖太独特找不到图片#{I18n.t "azurlane.emoji.sweat"}")], :at) if data.nil?
 
           send_group_message(@message, setu_chain(data, is_r18), :at)
         end
@@ -53,7 +53,7 @@ module Features
 
     def setu_chain(data, is_r18)
       image_base64 = download_pic(data["pid"], data.dig("urls", "original"), base64: true)
-      return send_group_message(@message, [plain("指挥官，下载图片出错惹#{I18n.t "emoji.cry"}")], :at) if image_base64 == false
+      return send_group_message(@message, [plain("指挥官，下载图片出错惹#{I18n.t "azurlane.emoji.cry"}")], :at) if image_base64 == false
 
       chain = [
         plain(

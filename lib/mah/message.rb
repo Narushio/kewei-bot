@@ -23,5 +23,9 @@ module Mah
     def qq
       sender.id
     end
+
+    def massage_id
+      message_chain.find { |chain| chain.type == "Source" }.id
+    end
   end
 end

@@ -15,6 +15,10 @@ module Mah
 
     private
 
+    def handle_wait_message(message)
+
+    end
+
     def handle_message(message)
       case message.type
       when "GroupMessage"
