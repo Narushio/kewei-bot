@@ -30,7 +30,7 @@ module Mah
               return nil unless data.type.present?
 
               @logger.message(data)
-              thread { @bot.adapter.handle(Message.new(data)) }
+              @bot.adapter.perform(data)
             end
           end
 

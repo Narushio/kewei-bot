@@ -1,5 +1,5 @@
 module Features::Azurlane::ShipInfo
-  def ship_info(name: nil, ship_id: nil)
+  def ship_info_card(name: nil, ship_id: nil)
     data = ship_data(name: name, ship_id: ship_id)
     return nil if data.nil?
 

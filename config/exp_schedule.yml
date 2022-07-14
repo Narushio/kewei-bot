@@ -1,0 +1,8 @@
+#main_job:
+#  cron: "0-59/10 * * * *"
+#  queue: default
+#  class: MainJob
+#check_log_max_job:
+#  cron: "* * * * 7"
+#  queue: low
+#  class: CheckLogMaxJob

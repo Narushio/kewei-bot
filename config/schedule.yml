@@ -1,0 +1,4 @@
+send_weibo:
+  cron: "0-59/1 * * * *"
+  queue: default
+  class: Features::Weibo

@@ -13,3 +13,16 @@ mah:
 wiki:
   jp: https://azurlane.koumakan.jp
   cn: https://wiki.biligame.com/blhx
+
+pixiv:
+  limit: 10
+  r18: false
+
+setu:
+  r18: false
+
+redisUrl: redis://redis:6379
+
+sidekiq:
+  user: sidekiq
+  password: password

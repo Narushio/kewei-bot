@@ -16,14 +16,37 @@ module Features
       query_recommend_equipment
       set_ship_alias
       query_ship_skin
+      query_ship_gallery
     end
 
     private
+
+    def query_ship_gallery
+      functions << {
+        level: 2,
+        function_type: "碧蓝航线",
+        function_name: "舰娘美图",
+        lambda: lambda do |message, text|
+          @message = message
+          return unless text.match?(/\A舰娘美图 (.*)/)
+
+          name = text.split(" ")[1]
+          ship_id = ShipAlias.find_by(name: name, status: :approved)&.ship_id
+          gallery = random_gallery(name: name, ship_id: ship_id)
+          return if gallery.nil?
+
+          send_group_message(@message, [plain("\n"), image(base64: gallery)], :at)
+        end
+      }
+
+      functions
+    end
 
     def query_ship_skin
       functions << {
         level: 2,
         function_type: "碧蓝航线",
+        function_name: "舰娘立绘",
         lambda: lambda do |message, text|
           @message = message
           return unless text.match?(/\A舰娘立绘 (.*)/)
@@ -31,17 +54,15 @@ module Features
           name = text.split(" ")[1]
           index = text.split(" ")[2]
           ship_id = ShipAlias.find_by(name: name, status: :approved)&.ship_id
-          return if name.nil? && ship_id.nil?
-
           list = ship_skin_list(name: name, ship_id: ship_id)
+          return if list.nil?
+
           if index.nil?
-            unless list.nil?
-              if list.size == 1
-                skin_card = ship_skin_card(name: name, ship_id: ship_id)
-                send_group_message(@message, [plain("\n"), image(base64: skin_card)], :at)
-              else
-                send_group_message(@message, ship_skin_chain(list), :at)
-              end
+            if list.size == 1
+              skin_card = ship_skin_card(name: name, ship_id: ship_id)
+              send_group_message(@message, [plain("\n"), image(base64: skin_card)], :at)
+            else
+              send_group_message(@message, ship_skin_chain(list), :at)
             end
           else
             skin_card = ship_skin_card(name: name, ship_id: ship_id, index: index)
@@ -57,6 +78,7 @@ module Features
       functions << {
         level: 2,
         function_type: "碧蓝航线",
+        function_name: "舰娘别名",
         lambda: lambda do |message, text|
           @message = message
           return unless text.match?(/\A舰娘别名 (.*)/)
@@ -68,7 +90,7 @@ module Features
 
           status = :un_approved
           text = "指挥官，设置成功，请等待管理员审核#{I18n.t "azurlane.emoji.happy"}"
-          if Settings.bot.superAdmins.include?(@message.qq)
+          if Settings.bot.superAdmins.include?(@message.qq) || @message.permission == "ADMINISTRATOR"
             status = :approved
             text = "指挥官，设置成功#{I18n.t "azurlane.emoji.be_cute"}"
           end
@@ -95,7 +117,7 @@ module Features
 
           name = text.split(" ")[1]
           ship_id = ShipAlias.find_by(name: name, status: :approved)&.ship_id
-          absolute_path = ship_info(name: name) || ship_info(ship_id: ship_id)
+          absolute_path = ship_info_card(name: name) || ship_info_card(ship_id: ship_id)
           return if absolute_path.nil?
 
           send_group_message(@message, [plain("\n"), image(path: absolute_path)], :at)
@@ -115,7 +137,7 @@ module Features
 
           name = text.split(" ")[1]
           ship_id = ShipAlias.find_by(name: name, status: :approved)&.ship_id
-          absolute_path = recommend_equipment(name: name) || recommend_equipment(ship_id: ship_id)
+          absolute_path = recommend_equipment(name: name, ship_id: ship_id)
           return if absolute_path.nil?
 
           send_group_message(@message, [plain("\n"), image(path: absolute_path)], :at)

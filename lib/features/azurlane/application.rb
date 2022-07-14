@@ -1,12 +1,12 @@
 module Features::Azurlane::Application
-  module_function
-
   include Features::Azurlane::Equipment
   include Features::Azurlane::ShipInfo
   include Features::Azurlane::ShipSkin
+  include Features::Azurlane::ShipGallery
 
   SHIPS = JSON.load_file("resource/ships.json")
   SHIP_SKINS = JSON.load_file("resource/ship_skins.json")
+  SHIP_GALLERY = JSON.load_file("resource/ship_gallery.json")
 
   def ship_data(name: nil, ship_id: nil)
     data = SHIPS.find { |ship| ship.dig("names", "cn") == name } unless name.nil?
@@ -38,6 +38,12 @@ module Features::Azurlane::Application
   def ship_skin_data(name: nil, ship_id: nil)
     data = SHIP_SKINS.find { |ship| ship["name"] == name } unless name.nil?
     data = SHIP_SKINS.find { |ship| ship["id"] == ship_id } unless ship_id.nil?
+    data.nil? ? nil : data
+  end
+
+  def ship_gallery_data(name: nil, ship_id: nil)
+    data = SHIP_GALLERY.find { |ship| ship["name"] == name } unless name.nil?
+    data = SHIP_GALLERY.find { |ship| ship["id"] == ship_id } unless ship_id.nil?
     data.nil? ? nil : data
   end
 end

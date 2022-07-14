@@ -12,10 +12,6 @@ class Logger
   end
 end
 
-def thread(&block)
-  Thread.new { block.call }.run if block
-end
-
 def download_pic(img_name, url, path: false, base64: false)
   pic_dir = "tmp/images"
   FileUtils.mkdir_p(pic_dir) unless Dir.exist?(pic_dir)

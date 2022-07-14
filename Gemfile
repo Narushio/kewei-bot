@@ -19,6 +19,9 @@ gem "faraday"
 gem "faye-websocket"
 gem "nokogiri"
 gem "down"
+gem "redis", "~> 4.5.1"
+gem "sidekiq"
+gem "sidekiq-cron"
 
 group :development, :test do
   gem "standardrb"

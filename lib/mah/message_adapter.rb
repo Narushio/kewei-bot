@@ -1,5 +1,7 @@
 module Mah
   class MessageAdapter
+    include Sidekiq::Worker
+
     def initialize
       @group_features = []
       @group_features << Features::Taking.new.build
@@ -8,7 +10,8 @@ module Mah
       @group_features << Features::Azurlane.new.build
     end
 
-    def handle(message)
+    def perform(data)
+      message = Message.new(data)
       handle_message(message) if Message::MESSAGE_TYPE.include?(message.type)
       handle_event(message)
     end
@@ -16,7 +19,6 @@ module Mah
     private
 
     def handle_wait_message(message)
-
     end
 
     def handle_message(message)

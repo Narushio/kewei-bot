@@ -1,5 +1,5 @@
 module Mah
-  class Message < Object
+  class Message
     CHAIN_TYPE = %(Source Quote At AtAll Face Plain Image
                    FlashImage Voice Xml Json App Poke Dice
                    MarketFace MusicShare Forward File MiraiCode)
@@ -24,8 +24,8 @@ module Mah
       sender.id
     end
 
-    def massage_id
-      message_chain.find { |chain| chain.type == "Source" }.id
+    def permission
+      sender.permission
     end
   end
 end
