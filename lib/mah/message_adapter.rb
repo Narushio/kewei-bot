@@ -11,7 +11,7 @@ module Mah
     end
 
     def perform(data)
-      message = Message.new(data)
+      message = Message.new(JSON.parse(data.to_json, object_class: OpenStruct))
       handle_message(message) if Message::MESSAGE_TYPE.include?(message.type)
       handle_event(message)
     end

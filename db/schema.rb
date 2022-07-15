@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_12_061235) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_15_014646) do
+  create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "password", null: false
+    t.datetime "updated_at_min", default: "2022-07-15 09:51:47", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "ship_aliases", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "qq", null: false
     t.string "name", null: false

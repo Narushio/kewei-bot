@@ -18,19 +18,19 @@ module Mah
           end
 
           ws.on :message do |event|
-            os = JSON.parse(event.data, object_class: OpenStruct)
-            data = os.data
-            session = data.session
+            os = JSON.parse(event.data)
+            data = os["data"]
+            session = data["session"]
             puts data
             if session
               Bot.define_singleton_method(:current_session) { session }
               BotEvent.send_to_super_admins([Chain.plain("启动完毕...")])
-            elsif os.syncId != "1"
-              raise(data.msg) if data.code == 2
-              return nil unless data.type.present?
+            elsif os["syncId"] != "1"
+              raise(data["msg"]) if data["code"] == 2
+              return nil unless data["type"].present?
 
               @logger.message(data)
-              @bot.adapter.perform(data)
+              Mah::MessageAdapter.perform_async(data)
             end
           end
 

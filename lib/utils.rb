@@ -1,11 +1,11 @@
 class Logger
   def message(data)
-    type = data.type
+    type = data["type"]
     case type
     when "FriendMessage"
-      info("Event(#{type}) #{data.sender["nickname"]}(#{data.sender.id}): #{data["messageChain"]}")
+      info("Event(#{type}) #{data.dig("sender", "nickname")}(#{data.dig("sender", "id")}): #{data["messageChain"]}")
     when "GroupMessage"
-      info("Event(#{type}) [#{data.sender.group.name}(#{data.sender.group.id})] #{data.sender["memberName"]}(#{data.sender.id}): #{data["messageChain"]}")
+      info("Event(#{type}) [#{data.dig("sender", "group", "name")}(#{data.dig("sender", "group", "id")})] #{data.dig("sender", "memberName")}(#{data.dig("sender", "id")}): #{data["messageChain"]}")
     else
       info("Event(#{type})")
     end

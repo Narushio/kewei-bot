@@ -1,0 +1,47 @@
+* {
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#template {
+  margin: 0 auto;
+  width: 640px;
+  background-color: #16161B;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 5% 5% 10% 5%;
+  color: white;
+  position: relative;
+}
+
+.blog-card img {
+  border-radius: 100%;
+  width: 50px;
+}
+
+.blog-card .main {
+  margin-left: 2%;
+}
+
+.tip {
+  position: absolute;
+  bottom: 25px;
+  right: 5%;
+}
+
+.tip span {
+  background: linear-gradient(145deg, rgb(195, 240, 200), rgb(80, 155, 245));
+  -webkit-background-clip: text;
+  color: transparent;
+}

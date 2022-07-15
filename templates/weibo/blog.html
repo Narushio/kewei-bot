@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="styleSheet" href="../assets/font.css" />
+    <link type="text/css" rel="styleSheet" href="blog.css" />
+    <link type="text/css" rel="styleSheet" href="../assets/iconfont.css" />
+    <title>Template</title>
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="../assets/babel.min.js"></script>
+  <script src="../assets/react.production.min.js"></script>
+  <script src="../assets/react-dom.production.min.js"></script>
+  <script type="text/babel">
+    "use strict";
+
+    const Root = ({ data }) => {
+      return (
+        <div id="template">
+          <div class="blog-card">
+            <div>
+              <img src="https://tvax3.sinaimg.cn/crop.0.0.750.750.180/006ixwxnly8gdi6z90kopj30ku0kudht.jpg?KID=imgbed,tva&amp;Expires=1657875888&amp;ssig=fEicrjrGiK" />
+            </div>
+            <div class="main">
+              <span>{data.editAt}</span>
+              <hr/>
+              <span dangerouslySetInnerHTML={{ __html: data.text }}></span>
+            </div>
+            <div className="tip">
+              <span className="iconfont icon-haixing"></span>
+              <span>Generate by Kewei—Bot</span>
+              <span className="iconfont icon-haixing"></span>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const initDom = (data) => {
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<Root data={data} />);
+    };
+  </script>
+</html>

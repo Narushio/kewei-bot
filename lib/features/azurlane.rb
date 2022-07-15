@@ -1,7 +1,6 @@
 module Features
   class Azurlane < Base
     include Application
-    include Helper
 
     attr_reader :functions
 
@@ -111,6 +110,7 @@ module Features
       functions << {
         level: 2,
         function_type: "碧蓝航线",
+        function_name: "查舰娘",
         lambda: lambda do |message, text|
           @message = message
           return unless text.match?(/\A查舰娘 (.*)/)
@@ -131,6 +131,7 @@ module Features
       functions << {
         level: 2,
         function_type: "碧蓝航线",
+        function_name: "查推荐装备",
         lambda: lambda do |message, text|
           @message = message
           return unless text.match?(/\A查推荐装备 (.*)/)
