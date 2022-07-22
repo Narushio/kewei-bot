@@ -26,7 +26,6 @@ module Features
         function_type: "碧蓝航线",
         function_name: "舰娘美图",
         lambda: lambda do |message, text|
-          @message = message
           return unless text.match?(/\A舰娘美图 (.*)/)
 
           name = text.split(" ")[1]
@@ -34,7 +33,8 @@ module Features
           gallery = random_gallery(name: name, ship_id: ship_id)
           return if gallery.nil?
 
-          send_group_message(@message, [plain("\n"), image(base64: gallery)], :at)
+          chain = [plain("\n"), image(base64: gallery)]
+          send_group_message(message, chain, at: true)
         end
       }
 
@@ -47,7 +47,6 @@ module Features
         function_type: "碧蓝航线",
         function_name: "舰娘立绘",
         lambda: lambda do |message, text|
-          @message = message
           return unless text.match?(/\A舰娘立绘 (.*)/)
 
           name = text.split(" ")[1]
@@ -59,14 +58,25 @@ module Features
           if index.nil?
             if list.size == 1
               skin_card = ship_skin_card(name: name, ship_id: ship_id)
-              send_group_message(@message, [plain("\n"), image(base64: skin_card)], :at)
+              chain = [plain("\n"), image(base64: skin_card)]
             else
-              send_group_message(@message, ship_skin_chain(list), :at)
+              chain = []
+              chain << plain("\n指挥官，找到以下立绘#{I18n.t "azurlane.emoji.be_cute"}：\n")
+              chain << plain("----------------------------\n")
+              list.each_with_index do |info, index|
+                chain << plain("  #{info}\n")
+                if index == list.size - 1
+                  chain << plain("----------------------------\n")
+                  chain << plain("回复【序号】可查看对应的立绘#{I18n.t "azurlane.emoji.lying_down"}")
+                end
+              end
             end
           else
             skin_card = ship_skin_card(name: name, ship_id: ship_id, index: index)
-            send_group_message(@message, [plain("\n"), image(base64: skin_card)], :at)
+            chain = [plain("\n"), image(base64: skin_card)]
           end
+
+          send_group_message(message, chain, at: true)
         end
       }
 
@@ -79,26 +89,27 @@ module Features
         function_type: "碧蓝航线",
         function_name: "舰娘别名",
         lambda: lambda do |message, text|
-          @message = message
           return unless text.match?(/\A舰娘别名 (.*)/)
 
           name = text.split(" ")[1]
           ship_alias = text.split(" ")[2]
-          ship_id = ship_data(name: name)[:id]
-          return if ship_id.nil? && ship_alias.nil?
+          ship = ships.find { |ship| ship.dig("names", "cn") == name }
+          return if ship.nil? || ship_alias.nil?
 
+          ship_id = ship["id"]
           status = :un_approved
-          text = "指挥官，设置成功，请等待管理员审核#{I18n.t "azurlane.emoji.happy"}"
-          if Settings.bot.superAdmins.include?(@message.qq) || @message.permission == "ADMINISTRATOR"
+          chain = [plain("指挥官，设置成功，请等待管理员审核#{I18n.t "azurlane.emoji.happy"}")]
+          if Settings.bot.superAdmins.include?(message.qq) || message.permission == "ADMINISTRATOR"
             status = :approved
-            text = "指挥官，设置成功#{I18n.t "azurlane.emoji.be_cute"}"
+            chain = [plain("指挥官，设置成功#{I18n.t "azurlane.emoji.be_cute"}")]
           end
 
           begin
-            ShipAlias.create!(ship_id: ship_id, qq: @message.qq, name: ship_alias, status: status)
-            send_group_message(@message, [plain(text)], :at)
+            ShipAlias.create!(ship_id: ship_id, qq: message.qq, name: ship_alias, status: status)
+            send_group_message(message, chain, at: true)
           rescue ActiveRecord::RecordNotUnique
-            send_group_message(@message, [plain("指挥官，该别名已经被设置过了#{I18n.t "azurlane.emoji.lying_down"}")], :at)
+            chain = [plain("指挥官，该别名已经被设置过了#{I18n.t "azurlane.emoji.lying_down"}")]
+            send_group_message(message, chain, at: true)
           end
         end
       }
@@ -112,7 +123,6 @@ module Features
         function_type: "碧蓝航线",
         function_name: "查舰娘",
         lambda: lambda do |message, text|
-          @message = message
           return unless text.match?(/\A查舰娘 (.*)/)
 
           name = text.split(" ")[1]
@@ -120,7 +130,8 @@ module Features
           absolute_path = ship_info_card(name: name) || ship_info_card(ship_id: ship_id)
           return if absolute_path.nil?
 
-          send_group_message(@message, [plain("\n"), image(path: absolute_path)], :at)
+          chain = [plain("\n"), image(path: absolute_path)]
+          send_group_message(message, chain, at: true)
         end
       }
 
@@ -133,7 +144,6 @@ module Features
         function_type: "碧蓝航线",
         function_name: "查推荐装备",
         lambda: lambda do |message, text|
-          @message = message
           return unless text.match?(/\A查推荐装备 (.*)/)
 
           name = text.split(" ")[1]
@@ -141,7 +151,8 @@ module Features
           absolute_path = recommend_equipment(name: name, ship_id: ship_id)
           return if absolute_path.nil?
 
-          send_group_message(@message, [plain("\n"), image(path: absolute_path)], :at)
+          chain = [plain("\n"), image(path: absolute_path)]
+          send_group_message(message, chain, at: true)
         end
       }
 

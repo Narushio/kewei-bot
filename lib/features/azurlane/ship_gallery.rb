@@ -1,9 +1,16 @@
 module Features::Azurlane::ShipGallery
   def random_gallery(name: nil, ship_id: nil)
-    data = ship_gallery_data(name: name, ship_id: ship_id)
-    return nil if data.nil?
+    data = nil
+    data = ship_gallery.find { |ship| ship["name"] == name } unless name.nil?
+    data = ship_gallery.find { |ship| ship["id"] == ship_id } unless ship_id.nil?
 
-    path = data["gallery"].sample["path"]
-    Base64.strict_encode64(File.read(path))
+    if data.nil?
+      nil
+    else
+      png_path = data["gallery"].sample["path"]
+      return nil unless File.exist?(png_path)
+
+      Base64.strict_encode64(File.read(png_path))
+    end
   end
 end

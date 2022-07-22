@@ -1,6 +1,6 @@
 module Features
   class Base
     include Mah::Chain
-    include Mah::BotEvent
+    include Mah::Adapter::BuiltIn
   end
 end

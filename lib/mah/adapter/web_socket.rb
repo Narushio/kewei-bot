@@ -1,6 +1,6 @@
 module Mah
-  module Connect
-    class WebSocketClient
+  module Adapter
+    class WebSocket
       def initialize(bot)
         @bot = bot
         @logger = Logger.new($stdout)
@@ -20,17 +20,17 @@ module Mah
           ws.on :message do |event|
             os = JSON.parse(event.data)
             data = os["data"]
-            session = data["session"]
-            puts data
-            if session
-              Bot.define_singleton_method(:current_session) { session }
-              BotEvent.send_to_super_admins([Chain.plain("启动完毕...")])
+            if data["session"]
+              Bot.define_singleton_method(:current_session) { data["session"] }
+
+              chain = [Chain.plain("启动完毕#{I18n.t "azurlane.emoji.happy"}")]
+              BuiltIn.send_to_super_admins(chain)
             elsif os["syncId"] != "1"
               raise(data["msg"]) if data["code"] == 2
-              return nil unless data["type"].present?
+              next unless data["type"].present?
 
               @logger.message(data)
-              Mah::MessageAdapter.perform_async(data)
+              Mah::Adapter::Message.perform_async(data)
             end
           end
 

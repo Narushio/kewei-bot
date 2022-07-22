@@ -5,8 +5,8 @@ class Bot
 
   def initialize
     build_browser_driver
-    @adapter = Mah::MessageAdapter.new
-    @web_socket_client = Mah::Connect::WebSocketClient.new(self).create_conn
+    @adapter = Mah::Adapter::Message.new
+    @web_socket_client = Mah::Adapter::WebSocket.new(self).create_conn
   end
 
   private

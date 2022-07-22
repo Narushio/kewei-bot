@@ -21,7 +21,7 @@ body {
   display: flex;
   flex-direction: row;
   padding: 5% 5% 10% 5%;
-  color: white;
+  color: #d3d3d3;
   position: relative;
 }
 
@@ -41,7 +41,8 @@ body {
 }
 
 .tip span {
-  background: linear-gradient(145deg, rgb(195, 240, 200), rgb(80, 155, 245));
+  /*background: linear-gradient(145deg, rgb(195, 240, 200), rgb(80, 155, 245));*/
+  background: white;
   -webkit-background-clip: text;
   color: transparent;
 }

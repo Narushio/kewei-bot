@@ -1,19 +1,46 @@
 module Features::Azurlane::ShipInfo
   def ship_info_card(name: nil, ship_id: nil)
-    data = ship_data(name: name, ship_id: ship_id)
-    return nil if data.nil?
+    data = nil
+    data = ships.find { |ship| ship.dig("names", "cn") == name } unless name.nil?
+    data = ships.find { |ship| ship["id"] == ship_id } unless ship_id.nil?
 
-    path = "resource/images/ship_info/"
-    unless File.exist?(path + "#{data[:id]}.png")
-      Bot.headless_driver.get("file://#{Rails.root.join("templates", "azurlane", "shipInfo.html")}")
-      Bot.headless_driver.manage.window.resize_to(1400, 1400)
-      Bot.headless_driver.execute_script("initDom(#{data.to_json})")
-      element = Bot.headless_driver.find_element(id: "template")
-      FileUtils.mkdir_p(path) unless Dir.exist?(path)
-      sleep 0.5
-      element.save_screenshot(path + "#{data[:id]}.png")
+    if data.nil?
+      nil
+    else
+      format_data = {
+        id: data["id"],
+        name: name,
+        code: data.dig("names", "code"),
+        stars: data["stars"],
+        thumbnail: data["thumbnail"],
+        rarityBG: data["rarityBG"],
+        hullType: data["hullType"],
+        nationIcon: data["nationIcon"],
+        hullTypeIcon: data["hullTypeIcon"],
+        skills: data["skills"],
+        baseStats: data.dig("stats", "baseStats"),
+        maxStats: data["stats"].fetch("level125Retrofit") { data["stats"]["level125"] },
+        limitBreaks: data["limitBreaks"],
+        devLevels: data["devLevels"],
+        wikiUrl: data["wikiUrl"]
+      }
+
+      path = "resource/images/ship_info/"
+      png_path = path + "#{format_data[:id]}.png"
+      driver = Bot.headless_driver
+
+      unless File.exist?(png_path)
+        driver.get("file://#{Rails.root.join("templates", "azurlane", "shipInfo.html")}")
+        driver.manage.window.resize_to(1400, 1400)
+        driver.execute_script("initDom(#{format_data.to_json})")
+        element = driver.find_element(id: "template")
+        FileUtils.mkdir_p(path) unless Dir.exist?(path)
+
+        sleep 0.5
+        element.save_screenshot(png_path)
+      end
+
+      Rails.root.join(png_path)
     end
-
-    Rails.root.join(path + "#{data[:id]}.png")
   end
 end

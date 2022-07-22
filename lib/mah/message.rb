@@ -24,6 +24,14 @@ module Mah
       sender.id
     end
 
+    def at_qq
+      message_chain.find { _1["type"] == "At" }["target"]
+    end
+
+    def group_id
+      sender.group.id
+    end
+
     def permission
       sender.permission
     end

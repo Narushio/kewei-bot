@@ -21,7 +21,6 @@ module Features
         level: 2,
         function_type: "色图",
         lambda: lambda do |message, text|
-          @message = message
           return if text.match(/\A(色图|涩图|🐍图)(.*)/).nil?
 
           is_r18 = false
@@ -32,38 +31,40 @@ module Features
               (params[:r18] = 1) and (is_r18 = true) if options.delete("r18") == "r18"
               if is_r18 && !Settings.setu.r18
                 image_base64 = Base64.strict_encode64(File.read("resource/images/emoji/不可以涩涩.gif"))
-                return send_group_message(@message, [plain("\n"), image(base64: image_base64)], :at)
+
+                chain = [plain("\n"), image(base64: image_base64)]
+                return send_group_message(message, chain, at: true)
               end
               params[:tag] = options unless options.empty?
             end
 
-            send_group_message(@message, [plain("嗯————?，指挥官竟然看我的色图，真是可爱呢~~~")], :at) if params[:tag].to_s.match?(/(可畏)/)
+            chain = [plain("嗯————?，指挥官竟然看我的色图，真是可爱呢~~~")]
+            send_group_message(message, chain, at: true) if params[:tag].to_s.match?(/(可畏)/)
             data = JSON.parse(@conn.post(nil, params.to_json).body).dig("data", 0)
           rescue => e
-            send_to_super_admins([plain(e.message)])
-            return send_group_message(@message, [plain("指挥官，网络请求失败惹#{I18n.t "azurlane.emoji.cry"}")], :at)
+            chain = [plain(e.message)]
+            send_to_super_admins(chain)
+
+            chain = [plain("指挥官，网络请求失败惹#{I18n.t "azurlane.emoji.cry"}")]
+            return send_group_message(message, chain, at: true)
           end
 
-          return send_group_message(@message, [plain("指挥官，指挥官的性癖太独特找不到图片#{I18n.t "azurlane.emoji.sweat"}")], :at) if data.nil?
+          chain = [plain("指挥官的性癖太独特找不到图片#{I18n.t "azurlane.emoji.sweat"}")]
+          return send_group_message(message, chain, at: true) if data.nil?
 
-          send_group_message(@message, setu_chain(data, is_r18), :at)
+          image_base64 = download_pic(data["pid"], data.dig("urls", "original"), base64: true)
+          chain = [plain("指挥官，下载图片出错惹#{I18n.t "azurlane.emoji.cry"}")]
+          return send_group_message(message, chain, at: true) unless image_base64
+
+          chain = [
+            plain("\nPID: #{data["pid"]}\nUID: #{data["uid"]}\nTitle: #{data["title"]}\n" \
+                  "Author: #{data["author"]}\nTags: #{data["tags"].join(",")}\n"),
+            image(base64: image_base64)
+          ]
+          chain = [forward(chain)] if is_r18
+          send_group_message(message, chain, at: true)
         end
       }
-    end
-
-    def setu_chain(data, is_r18)
-      image_base64 = download_pic(data["pid"], data.dig("urls", "original"), base64: true)
-      return send_group_message(@message, [plain("指挥官，下载图片出错惹#{I18n.t "azurlane.emoji.cry"}")], :at) if image_base64 == false
-
-      chain = [
-        plain(
-          "\nPID: #{data["pid"]}\nUID: #{data["uid"]}\nTitle: #{data["title"]}\n" \
-          "Author: #{data["author"]}\nTags: #{data["tags"].join(",")}\n"
-        ),
-        image(base64: image_base64)
-      ]
-      chain = [forward(chain)] if is_r18
-      chain
     end
   end
 end

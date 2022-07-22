@@ -27,7 +27,7 @@ def download_pic(img_name, url, path: false, base64: false)
     end
     File.write(destination, stream)
   rescue
-    return false
+    nil
   end
 
   if path

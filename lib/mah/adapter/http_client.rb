@@ -1,5 +1,5 @@
 module Mah
-  module Connect
+  module Adapter
     class HttpClient
       attr_reader :session, :conn
 

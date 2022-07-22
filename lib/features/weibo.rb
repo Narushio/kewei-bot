@@ -7,10 +7,10 @@ module Features
     def perform
       cards = get_cards
       unless cards.empty?
-        blogs = cards.map { |card| card["mblog"] }
         updated_at_min = Admin.first.updated_at_min
-        blog = blogs.find { |blog| (blog["edit_at"] || blog["created_at"]) >= updated_at_min }
-        unless blog.nil?
+        card = cards.find { |card| (card.dig("mblog", "edit_at") || card.dig("mblog", "created_at")) >= updated_at_min }
+        unless card.nil?
+          blog = card["mblog"]
           full_html_text = get_full_html_text(blog["id"])
           blog_card = get_blog_card(full_html_text, blog["edit_at"] || blog["created_at"])
 
@@ -20,9 +20,11 @@ module Features
             subCommand: nil,
             content: {
               sessionKey: Bot.current_session,
-              target: 724082984,
-              messageChain: [{type: "Plain", text: "来自【碧蓝航线】最新微博#{I18n.t "azurlane.emoji.be_cute"}\n"},
-                {type: "Image", base64: blog_card}]
+              target: 626229186,
+              messageChain: [
+                {type: "Plain", text: "来自【碧蓝航线】最新微博#{I18n.t "azurlane.emoji.be_cute"}\n#{card["scheme"]}\n"},
+                {type: "Image", base64: blog_card}
+              ]
             }
           }
           Admin.first.update_attribute("updated_at_min", Time.zone.now)
